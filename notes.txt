@@ -1,0 +1,63 @@
+Uninstall react scripts
+npm uninstall react-scripts
+
+Install vite dependencies
+npm install vite @vitejs/plugin-react-swc vite-tsconfig-paths vite-plugin-svgr
+
+create-react-app uses public/index.html as the default entry point, while Vite looks for index.html at the root level.
+move your index.html to the root directory and update the script tag accordingly.
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+
+  <script type="module" src="/src/index.jsx"></script>
+</body>
+
+remove all occurrences of %PUBLIC_URL% from the index.html file.
+
+rename all .js files to .jsx
+
+Adding vite.config.ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  base: '/',
+  plugins: [react()]
+})
+
+Adding vite-env.d.ts
+/// <reference types="vite/client" />
+
+Adding vite scripts
+ "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+}
+
+Update your tsconfig.json to its final version.
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "jsx": "react-jsx",
+    "types": ["vite/client", "vite-plugin-svgr/client"]
+  },
+  "include": ["src"]
+}
+
+
